@@ -1,0 +1,9 @@
+
+grumphp:
+    tasks:
+        ecs:
+            config: ecs.php
+        git_commit_message: ~
+        phpstan:
+            configuration: phpstan.neon
+        phpunit: ~

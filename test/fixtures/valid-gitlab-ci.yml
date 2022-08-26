@@ -1,0 +1,9 @@
+stages:
+    - build
+    - test
+    - deploy
+
+install-app:
+    stage: build
+    script:
+        - echo 'this is a test'
