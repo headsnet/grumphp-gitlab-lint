@@ -51,8 +51,7 @@ final class GitlabApiClient
         $yamlEncoder = new YamlEncoder();
         $jsonEncoder = new JsonEncoder();
 
-        if (!file_exists($this->configFile))
-        {
+        if (! file_exists($this->configFile)) {
             throw GitlabLinterException::fileNotFound($this->configFile);
         }
 
