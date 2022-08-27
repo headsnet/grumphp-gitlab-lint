@@ -1,4 +1,6 @@
 ![Github Actions](https://github.com/headsnet/grumphp-gitlab-lint/actions/workflows/ci.yml/badge.svg)
+[![Installs](https://img.shields.io/packagist/dt/headsnet/grumphp-gitlab-lint.svg)](https://packagist.org/packages/headsnet/grumphp-gitlab-lint/stats)
+[![Packagist](https://img.shields.io/packagist/v/headsnet/grumphp-gitlab-lint.svg)](https://packagist.org/packages/headsnet/grumphp-gitlab-lint)
 
 # GrumPHP Gitlab Lint
 
