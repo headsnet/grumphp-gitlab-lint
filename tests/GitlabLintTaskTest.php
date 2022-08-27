@@ -25,9 +25,9 @@ use PHPUnit\Framework\TestCase;
 
 class GitlabLintTaskTest extends TestCase
 {
-    private const VALID_GITLAB_CI_YML = '../fixtures/valid-gitlab-ci.yml';
+    private const VALID_GITLAB_CI_YML = 'fixtures/valid-gitlab-ci.yml';
 
-    private const INVALID_GITLAB_CI_YML = '../fixtures/invalid-gitlab-ci.yml';
+    private const INVALID_GITLAB_CI_YML = 'fixtures/invalid-gitlab-ci.yml';
 
     private const GITLAB_TEST_TOKEN = 'glpat-M8-Lb3zhAxa7RG6oVBox'; // Token from a test Gitlab account!
 
