@@ -116,6 +116,7 @@ class GitlabLintTaskTest extends TestCase
                 [
                     'api_token' => $apiToken,
                     'gitlab_file' => sprintf('%s/%s', __DIR__, $file),
+                    'gitlab_url' => 'gitlab.com',
                 ],
                 new Metadata([])
             )

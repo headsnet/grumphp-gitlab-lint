@@ -23,16 +23,22 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 final class GitlabApiClient
 {
-    private const API_URL = 'https://gitlab.com/api/v4/ci/lint';
+    private const API_URL = 'https://%s/api/v4/ci/lint';
 
     private string $apiToken;
 
     private string $configFile;
 
-    public function __construct(string $apiToken, string $configFile)
+    private string $gitlabInstance;
+
+    /**
+     * @param array<string> $config
+     */
+    public function __construct(array $config)
     {
-        $this->configFile = $configFile;
-        $this->apiToken = $apiToken;
+        $this->configFile = $config['gitlab_file'];
+        $this->apiToken = $config['api_token'];
+        $this->gitlabInstance = $config['gitlab_url'];
     }
 
     /**
@@ -65,7 +71,8 @@ final class GitlabApiClient
         $jsonData = str_replace('\\', '\\\\', $jsonData);
         $jsonData = str_replace('"', '\"', $jsonData);
 
-        $response = $httpClient->request('POST', self::API_URL, [
+        $url = sprintf(self::API_URL, $this->gitlabInstance);
+        $response = $httpClient->request('POST', $url, [
             'headers' => [
                 'Content-Type' => 'application/json',
                 'PRIVATE-TOKEN' => $this->apiToken,

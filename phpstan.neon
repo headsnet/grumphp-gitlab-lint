@@ -4,6 +4,6 @@ parameters:
 
     paths:
         - src/
-        - test/
+        - tests/
 
     checkGenericClassInNonGenericObjectType: false

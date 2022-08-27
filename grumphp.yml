@@ -1,9 +1,11 @@
 
 grumphp:
+    git_hook_variables:
+        EXEC_GRUMPHP_COMMAND: docker run -i --rm --name my-running-script -v "$PWD":/app -w /app php:8.1-cli
     tasks:
         ecs:
             config: ecs.php
         git_commit_message: ~
         phpstan:
             configuration: phpstan.neon
-        phpunit: ~
+        phpunit:

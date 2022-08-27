@@ -6,7 +6,7 @@
     "autoload": {
         "psr-4": {
             "Headsnet\\GrumPHP\\GitlabLint\\": "src/",
-            "Headsnet\\GrumPHP\\GitlabLint\\Test\\": "test/"
+            "Headsnet\\GrumPHP\\GitlabLint\\Test\\": "tests/"
         }
     },
     "authors": [
@@ -32,7 +32,7 @@
         "cs": "vendor/bin/ecs check --ansi --config=ecs.php",
         "cs-fix": "vendor/bin/ecs check --ansi --config=ecs.php --fix",
         "static": "vendor/bin/phpstan analyze --ansi",
-        "test": "vendor/bin/phpunit test"
+        "test": "vendor/bin/phpunit tests"
     },
     "config": {
         "allow-plugins": {

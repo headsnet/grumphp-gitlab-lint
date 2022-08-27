@@ -28,11 +28,13 @@ final class GitlabLintTask extends AbstractExternalTask
         $resolver->setDefaults([
             'api_token' => '',
             'gitlab_file' => dirname(__DIR__, 4) . '/.gitlab-ci.yml',
+            'gitlab_url' => 'gitlab.com',
         ]);
 
         $resolver
             ->addAllowedTypes('api_token', ['string'])
             ->addAllowedTypes('gitlab_file', ['string'])
+            ->addAllowedTypes('gitlab_url', ['string'])
         ;
 
         return $resolver;
@@ -47,10 +49,7 @@ final class GitlabLintTask extends AbstractExternalTask
     {
         $config = $this->getConfig()->getOptions();
 
-        $apiClient = new GitlabApiClient(
-            $config['api_token'],
-            $config['gitlab_file']
-        );
+        $apiClient = new GitlabApiClient($config);
 
         /** @var array{valid: bool, errors: array<string>} $response */
         $response = $apiClient->lint();
