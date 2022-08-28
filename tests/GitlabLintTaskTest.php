@@ -22,6 +22,7 @@ use GrumPHP\Task\TaskInterface;
 use Headsnet\GrumPHP\GitlabLint\GitlabLinterException;
 use Headsnet\GrumPHP\GitlabLint\GitlabLintTask;
 use PHPUnit\Framework\TestCase;
+use SplFileInfo;
 
 class GitlabLintTaskTest extends TestCase
 {
@@ -96,12 +97,20 @@ class GitlabLintTaskTest extends TestCase
      */
     private function buildTask(string $file, string $apiToken): array
     {
+        $gitlabFile = sprintf('%s/%s', __DIR__, $file);
         $processBuilder = $this->createMock(ProcessBuilder::class);
         $rawProcessFormatter = $this->createMock(RawProcessFormatter::class);
-        $context = new class() implements ContextInterface {
+        $context = new class($gitlabFile) implements ContextInterface {
+            private string $gitlabFile;
+
+            public function __construct(string $gitlabFile)
+            {
+                $this->gitlabFile = $gitlabFile;
+            }
+
             public function getFiles(): FilesCollection
             {
-                return new FilesCollection();
+                return new FilesCollection([new SplFileInfo($this->gitlabFile)]);
             }
         };
 
@@ -115,7 +124,7 @@ class GitlabLintTaskTest extends TestCase
                 'gitlab_lint',
                 [
                     'api_token' => $apiToken,
-                    'gitlab_file' => sprintf('%s/%s', __DIR__, $file),
+                    'gitlab_file' => $gitlabFile,
                     'gitlab_url' => 'gitlab.com',
                 ],
                 new Metadata([])

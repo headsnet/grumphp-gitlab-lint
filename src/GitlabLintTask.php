@@ -49,6 +49,15 @@ final class GitlabLintTask extends AbstractExternalTask
     {
         $config = $this->getConfig()->getOptions();
 
+        if (! file_exists($config['gitlab_file'])) {
+            throw GitlabLinterException::fileNotFound($config['gitlab_file']);
+        }
+
+        $files = $context->getFiles()->name(basename($config['gitlab_file']));
+        if (count($files) === 0) {
+            return TaskResult::createSkipped($this, $context);
+        }
+
         $apiClient = new GitlabApiClient($config);
 
         /** @var array{valid: bool, errors: array<string>} $response */
