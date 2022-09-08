@@ -19,9 +19,14 @@ final class GitlabLinterException extends \RuntimeException
         parent::__construct($message);
     }
 
+    public static function missingToken(): self
+    {
+        return new self('Your Gitlab API token cannot be read!');
+    }
+
     public static function unauthorized(): self
     {
-        return new self('Your token has not been authorized by Gitlab!');
+        return new self('Your Gitlab API token has not been authorized by Gitlab!');
     }
 
     public static function error500(): self
@@ -31,6 +36,6 @@ final class GitlabLinterException extends \RuntimeException
 
     public static function fileNotFound(string $file): self
     {
-        return new self(sprintf('Cannot find the Gitlab file "%s"', $file));
+        return new self(sprintf('Cannot find the Gitlab CI file "%s"', $file));
     }
 }

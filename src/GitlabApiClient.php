@@ -25,9 +25,9 @@ final class GitlabApiClient
 {
     private const API_URL = 'https://%s/api/v4/ci/lint';
 
-    private string $apiToken;
+    private string $gitlabToken;
 
-    private string $configFile;
+    private string $gitlabFile;
 
     private string $gitlabInstance;
 
@@ -36,8 +36,8 @@ final class GitlabApiClient
      */
     public function __construct(array $config)
     {
-        $this->configFile = $config['gitlab_file'];
-        $this->apiToken = $config['api_token'];
+        $this->gitlabToken = $config['api_token'];
+        $this->gitlabFile = $config['gitlab_file'];
         $this->gitlabInstance = $config['gitlab_url'];
     }
 
@@ -52,28 +52,19 @@ final class GitlabApiClient
      */
     public function lint(): array
     {
+        if (strlen($this->gitlabToken) === 0) {
+            throw GitlabLinterException::missingToken();
+        }
+
         $httpClient = HttpClient::create();
-
-        $yamlEncoder = new YamlEncoder();
-        $jsonEncoder = new JsonEncoder();
-
-        $fileContents = (string) file_get_contents($this->configFile);
-
-        $jsonData = $jsonEncoder->encode(
-            $yamlEncoder->decode($fileContents, YamlEncoder::FORMAT),
-            JsonEncoder::FORMAT
-        );
-
-        $jsonData = str_replace('\\', '\\\\', $jsonData);
-        $jsonData = str_replace('"', '\"', $jsonData);
 
         $url = sprintf(self::API_URL, $this->gitlabInstance);
         $response = $httpClient->request('POST', $url, [
             'headers' => [
                 'Content-Type' => 'application/json',
-                'PRIVATE-TOKEN' => $this->apiToken,
+                'PRIVATE-TOKEN' => $this->gitlabToken,
             ],
-            'body' => sprintf('{"content": "%s"}', $jsonData),
+            'body' => sprintf('{"content": "%s"}', $this->yamlConfigEncodedAsJson()),
         ]);
 
         if ($response->getStatusCode() === 401) {
@@ -85,5 +76,22 @@ final class GitlabApiClient
         }
 
         return $response->toArray();
+    }
+
+    private function yamlConfigEncodedAsJson(): string
+    {
+        $fileContents = (string) file_get_contents($this->gitlabFile);
+
+        $yamlEncoder = new YamlEncoder();
+        $jsonEncoder = new JsonEncoder();
+
+        $jsonData = $jsonEncoder->encode(
+            $yamlEncoder->decode($fileContents, YamlEncoder::FORMAT),
+            JsonEncoder::FORMAT
+        );
+
+        $jsonData = str_replace('\\', '\\\\', $jsonData);
+
+        return str_replace('"', '\"', $jsonData);
     }
 }
