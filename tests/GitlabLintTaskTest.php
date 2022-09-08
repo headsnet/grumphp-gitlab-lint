@@ -48,12 +48,24 @@ class GitlabLintTaskTest extends TestCase
         $sut->run($context);
     }
 
-    public function test_handles_authentication_error(): void
+    public function test_handles_missing_token(): void
     {
         [
             $context,
             $sut
         ] = $this->buildTask(self::VALID_GITLAB_CI_YML, '');
+
+        $this->expectExceptionObject(GitlabLinterException::missingToken());
+
+        $sut->run($context);
+    }
+
+    public function test_handles_authentication_error(): void
+    {
+        [
+            $context,
+            $sut
+        ] = $this->buildTask(self::VALID_GITLAB_CI_YML, 'random-token-string');
 
         $this->expectExceptionObject(GitlabLinterException::unauthorized());
 
