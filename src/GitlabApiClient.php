@@ -23,7 +23,7 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 final class GitlabApiClient
 {
-    private const API_URL = 'https://%s/api/v4/ci/lint';
+    private const API_URL = 'https://%s/ci/lint';
 
     private string $gitlabToken;
 

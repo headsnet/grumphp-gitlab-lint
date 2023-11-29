@@ -1,0 +1,9 @@
+
+services:
+  task.gitlab_lint:
+    class: Headsnet\GrumPHP\GitlabLint\GitlabLintTask
+    arguments:
+      - '@process_builder'
+      - '@formatter.raw_process'
+    tags:
+      - { name: 'grumphp.task', task: 'gitlab_lint' }
